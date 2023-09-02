@@ -24,11 +24,7 @@ pipeline {
         stage("run backend server"){
             steps {
                 script {
-                    if (checkOs() == 'Windows') {
-                        bat 'start/min python rest_app.py'
-                    } else {
-                        sh 'nohup python rest_app.py &'
-                    }
+                    bat 'start/min python rest_app.py'
                 }
             }
         }
