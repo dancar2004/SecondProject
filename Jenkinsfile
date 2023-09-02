@@ -11,5 +11,20 @@ pipeline {
                 echo 'Hellow World'                
             }
         }
+
+        stage("checkout"){
+            steps {
+                scripts {
+                    properties([pipelineTriggers([pollSCM('H/30 * * * * *')])])
+                }
+                git 'https://github.com/dancar2004/SecondProject.git'
+            }
+        }
+
+        stage("build"){
+            steps {
+                echo 'Completed Successfully'
+            }
+        }
     }
 }
