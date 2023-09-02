@@ -18,7 +18,7 @@ pipeline {
         stage('run backend server'){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python rest_app.py'
                     } else {
                         sh 'nohup python rest_app.py &'
@@ -30,7 +30,7 @@ pipeline {
         stage("run frontend server"){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python web_app.py'
                     } else {
                         sh 'nohup python web_app.py &'
@@ -42,7 +42,7 @@ pipeline {
         stage("run backend testing"){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python backend_testing.py'
                     } else {
                         sh 'nohup python backend_testing.py &'
@@ -54,7 +54,7 @@ pipeline {
         stage("run frontend testing"){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python frontend_testing.py'
                     } else {
                         sh 'nohup python frontend_testing.py &'
@@ -66,7 +66,7 @@ pipeline {
         stage("run combined testing"){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python combined_testing.py'
                     } else {
                         sh 'nohup python combined_testing.py &'
@@ -78,7 +78,7 @@ pipeline {
         stage("run clean environment"){
             steps {
                 script {
-                    if (check0s() == 'Windows') {
+                    if (checkOs() == 'Windows') {
                         bat 'start/min python clean_environment.py'
                     } else {
                         sh 'nohup python clean_environment.py &'
