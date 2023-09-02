@@ -15,7 +15,7 @@ pipeline {
         stage("checkout"){
             steps {
                 script {
-                    properties([pipelineTriggers([pollSCM('H/30 * * * * *')])])
+                    properties([pipelineTriggers([pollSCM('H/30 * * * *')])])
                 }
                 git 'https://github.com/dancar2004/SecondProject.git'
             }
