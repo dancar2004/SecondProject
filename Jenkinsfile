@@ -6,13 +6,7 @@ pipeline {
     }
 
     stages {
-        stage("test") {
-            steps {
-                echo 'Hellow World'                
-            }
-        }
-
-        stage("checkout"){
+        stage('checkout'){
             steps {
                 script {
                     properties([pipelineTriggers([pollSCM('H/30 * * * *')])])
@@ -21,10 +15,14 @@ pipeline {
             }
         }
 
-        stage("run backend server"){
+        stage('run backend server'){
             steps {
                 script {
-                    bat 'start/min python rest_app.py'
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python rest_app.py'
+                    } else {
+                        sh 'nohup python rest_app.py &'
+                    }
                 }
             }
         }
@@ -32,9 +30,76 @@ pipeline {
         stage("run frontend server"){
             steps {
                 script {
-                    bat 'start/min python web_app.py'
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python web_app.py'
+                    } else {
+                        sh 'nohup python web_app.py &'
+                    }
                 }
             }
+        }
+
+        stage("run backend testing"){
+            steps {
+                script {
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python backend_testing.py'
+                    } else {
+                        sh 'nohup python backend_testing.py &'
+                    }
+                }
+            }
+        }
+
+        stage("run frontend testing"){
+            steps {
+                script {
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python frontend_testing.py'
+                    } else {
+                        sh 'nohup python frontend_testing.py &'
+                    }
+                }
+            }
+        }
+
+        stage("run combined testing"){
+            steps {
+                script {
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python combined_testing.py'
+                    } else {
+                        sh 'nohup python combined_testing.py &'
+                    }
+                }
+            }
+        }
+
+        stage("run clean environment"){
+            steps {
+                script {
+                    if (check0s() == 'Windows') {
+                        bat 'start/min python clean_environment.py'
+                    } else {
+                        sh 'nohup python clean_environment.py &'
+                    }
+                }
+            }
+        }
+    }
+
+    def checkOs(){
+        if (isUnix()) {
+            def uname = sh script: 'uname', returnStdout: true
+            if (uname.startsWith("Darwin")) {
+                return "Macos"
+            }
+            // Optionally add 'else if' for other Unix OS
+            else {
+                return "Linux"
+            }
+        } else {
+            return "Windows"
         }
     }
 }
