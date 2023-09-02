@@ -21,9 +21,27 @@ pipeline {
             }
         }
 
-        stage("build"){
+        stage("run backend server"){
             steps {
-                echo 'Completed Successfully'
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start/min python rest_app.py'
+                    } else {
+                        sh 'nohup python rest_app.py &'
+                    }
+                }
+            }
+        }
+
+        stage("run frontend server"){
+            steps {
+                script {
+                    if (checkOs() == 'Windows') {
+                        bat 'start/min python web_app.py'
+                    } else {
+                        sh 'nohup python web_app.py &'
+                    }
+                }
             }
         }
     }
